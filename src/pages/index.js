@@ -146,23 +146,23 @@ export default function HomePage({ initialMembers, totalMembers }) {
                 View All →
               </Link>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14, alignItems: "stretch" }}>
               {featuredMembers.map(m => (
                 <Link key={F.id(m)} href={`/members/${F.id(m)}`} style={{ textDecoration: "none" }}>
-                  <div className="card hover-lift" style={{ cursor: "pointer", padding: 20 }}>
+                  <div className="card hover-lift" style={{ cursor: "pointer", padding: 20, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
                       <MemberAvatar member={m} size={56} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", marginBottom: 2, fontFamily: "'DM Sans',sans-serif", lineHeight: 1.3 }}>{F.name(m)}</div>
-                        <div style={{ fontSize: 12, color: "#e8651a", fontWeight: 600, fontFamily: "'DM Sans',sans-serif", marginBottom: 4 }}>{F.party(m)}</div>
-                        <div style={{ fontSize: 11, color: "#aaa", fontFamily: "'DM Sans',sans-serif" }}>📍 {F.constituency(m)}, {F.state(m)}</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", marginBottom: 2, lineHeight: 1.3, height: "36px", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "2", WebkitBoxOrient: "vertical" }}>{F.name(m)}</div>
+                        <div style={{ fontSize: 12, color: "#e8651a", fontWeight: 600, marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{F.party(m)}</div>
+                        <div style={{ fontSize: 11, color: "#aaa", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📍 {F.constituency(m)}, {F.state(m)}</div>
                       </div>
                     </div>
                     <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid #f5f3f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 20, fontWeight: 600, background: m.status === "Sitting" ? "#dcfce7" : "#f5f3f0", color: m.status === "Sitting" ? "#16a34a" : "#888" }}>
                         {m.status === "Sitting" ? "✅ Sitting" : "🕐 Former"}
                       </span>
-                      <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 6, background: "#e8f0fe", color: "#1a5ce8", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>🏛 Lok Sabha</span>
+                      <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 6, background: "#e8f0fe", color: "#1a5ce8", fontWeight: 600 }}>🏛 Lok Sabha</span>
                     </div>
                   </div>
                 </Link>
