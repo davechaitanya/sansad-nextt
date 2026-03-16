@@ -101,16 +101,16 @@ export default function MembersPage({ initialMembers, initialTotal, initialPages
           {error && <ErrorBox message={error} />}
           {!loading && members.length===0 && <EmptyState icon="👤" title="No members found" subtitle="Try adjusting your filters" />}
           {!loading && members.length>0 && viewMode==="grid" && (
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:14 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:14, alignItems:"stretch" }}>
               {members.map(m=>(
                 <Link key={m.id} href={`/members/${F.id(m)}`} style={{ textDecoration:"none" }}>
-                  <div className="card hover-lift" style={{ cursor:"pointer", padding:20 }}>
+                  <div className="card hover-lift" style={{ cursor:"pointer", padding:20, height:"100%", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
                     <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
                       <MemberAvatar member={m} size={56} />
                       <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ fontSize:14, fontWeight:700, color:"#1a1a1a", marginBottom:2, lineHeight:1.3 }}>{F.name(m)}</div>
-                        <div style={{ fontSize:12, color:"#e8651a", fontWeight:600, marginBottom:4 }}>{F.party(m)}</div>
-                        <div style={{ fontSize:11, color:"#aaa" }}>📍 {F.constituency(m)}, {F.state(m)}</div>
+                        <div style={{ fontSize:14, fontWeight:700, color:"#1a1a1a", marginBottom:2, lineHeight:1.3, display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{F.name(m)}</div>
+                        <div style={{ fontSize:12, color:"#e8651a", fontWeight:600, marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{F.party(m)}</div>
+                        <div style={{ fontSize:11, color:"#aaa", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>📍 {F.constituency(m)}, {F.state(m)}</div>
                       </div>
                     </div>
                     <div style={{ marginTop:14, paddingTop:12, borderTop:"1px solid #f5f3f0", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
@@ -159,4 +159,4 @@ export async function getServerSideProps({ query }) {
   } catch {
     return { props: { initialMembers:[], initialTotal:0, initialPages:1 } };
   }
-}
+}   
