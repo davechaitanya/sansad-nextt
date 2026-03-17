@@ -68,11 +68,13 @@ export default function MemberProfilePage({ member: initialMember, dashboard: in
     }
   }, [mp_code]);
 
-  // Redirect to canonical slug URL if URL doesn't have name
+  // Always redirect to canonical slug URL
   useEffect(() => {
-    if (member && slug && !slug.includes("-")) {
+    if (member && slug && mp_code) {
       const canonical = memberSlug(mp_code, member.name, member.constituency);
-      router.replace(`/members/${canonical}`, undefined, { shallow: true });
+      if (slug !== canonical) {
+        router.replace(`/members/${canonical}`);
+      }
     }
   }, [member, slug]);
 
@@ -396,6 +398,18 @@ export async function getServerSideProps({ params }) {
     const profile = await profileRes.json();
     const dash = dashRes.ok ? await dashRes.json() : null;
     if (!profile?.member) return { notFound: true };
+
+    // Server-side canonical redirect
+    const canonical = memberSlug(mp_code, profile.member.name, profile.member.constituency);
+    if (params.slug !== canonical) {
+      return {
+        redirect: {
+          destination: `/members/${canonical}`,
+          permanent: true, // 301 redirect — best for SEO
+        }
+      };
+    }
+
     return { props: { member: profile.member, dashboard: dash } };
   } catch {
     return { notFound: true };
