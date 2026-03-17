@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import api, { F, P } from "../../services/api";
 import { Spinner, ErrorBox, SearchInput, EmptyState, Pagination } from "../../components/UI";
 import MemberAvatar from "../../components/MemberAvatar";
+import { memberSlug } from "../../utils/slug";
 
 const ALL_PARTIES = [
   "BJP","INC","SP","AITC","DMK","TDP","JDU","SHSUBT","NCPSP","SHS","NCP","CPI(M)","CPI",
@@ -103,7 +104,7 @@ export default function MembersPage({ initialMembers, initialTotal, initialPages
           {!loading && members.length>0 && viewMode==="grid" && (
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:14, alignItems:"stretch" }}>
               {members.map(m=>(
-                <Link key={m.id} href={`/members/${F.id(m)}`} style={{ textDecoration:"none" }}>
+                <Link key={m.id} href={`/members/${memberSlug(F.id(m), m.name, m.constituency)}`} style={{ textDecoration:"none" }}>
                   <div className="card hover-lift" style={{ cursor:"pointer", padding:20, height:"100%", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
                     <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
                       <MemberAvatar member={m} size={56} />
@@ -131,7 +132,7 @@ export default function MembersPage({ initialMembers, initialTotal, initialPages
                 <thead><tr><th>MP</th><th>Party</th><th>Constituency</th><th>State</th><th>Terms</th><th>Status</th></tr></thead>
                 <tbody>
                   {members.map(m=>(
-                    <tr key={m.id} style={{ cursor:"pointer" }} onClick={()=>router.push(`/members/${F.id(m)}`)}>
+                    <tr key={m.id} style={{ cursor:"pointer" }} onClick={()=>router.push(`/members/${memberSlug(F.id(m), m.name, m.constituency)}`)}>
                       <td><div style={{ display:"flex", gap:10, alignItems:"center" }}><MemberAvatar member={m} size={36} /><span style={{ fontWeight:600, fontSize:13 }}>{F.name(m)}</span></div></td>
                       <td>{F.party(m)}</td><td>{F.constituency(m)}</td><td style={{ color:"#666" }}>{F.state(m)}</td>
                       <td style={{ color:"#aaa", fontSize:12 }}>Term {F.terms(m)}</td>
@@ -159,4 +160,4 @@ export async function getServerSideProps({ query }) {
   } catch {
     return { props: { initialMembers:[], initialTotal:0, initialPages:1 } };
   }
-}   
+}

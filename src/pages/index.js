@@ -5,6 +5,7 @@ import Link from "next/link";
 import api, { F, P } from "../services/api";
 import { Spinner } from "../components/UI";
 import MemberAvatar from "../components/MemberAvatar";
+import { memberSlug } from "../utils/slug";
 
 export default function HomePage({ initialMembers, totalMembers }) {
   const router = useRouter();
@@ -94,7 +95,7 @@ export default function HomePage({ initialMembers, totalMembers }) {
                 <div style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.15)", border: "1px solid #ede9e4", zIndex: 200, overflow: "hidden" }}>
                   {sugLoading && <div style={{ padding: 16, textAlign: "center", color: "#aaa", fontSize: 13 }}>Searching...</div>}
                   {!sugLoading && suggestions.map(m => (
-                    <div key={F.id(m)} onClick={() => { setShowDrop(false); setSearch(""); router.push(`/members/${F.id(m)}`); }}
+                    <div key={F.id(m)} onClick={() => { setShowDrop(false); setSearch(""); router.push(`/members/${memberSlug(F.id(m), m.name, m.constituency)}`); }}
                       style={{ display: "flex", gap: 12, alignItems: "center", padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #f5f3f0", transition: "background 0.15s" }}
                       onMouseEnter={e => e.currentTarget.style.background = "#fffaf6"}
                       onMouseLeave={e => e.currentTarget.style.background = "white"}>
@@ -148,7 +149,7 @@ export default function HomePage({ initialMembers, totalMembers }) {
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14, alignItems: "stretch" }}>
               {featuredMembers.map(m => (
-                <Link key={F.id(m)} href={`/members/${F.id(m)}`} style={{ textDecoration: "none" }}>
+                <Link key={F.id(m)} href={`/members/${memberSlug(F.id(m), m.name, m.constituency)}`} style={{ textDecoration: "none" }}>
                   <div className="card hover-lift" style={{ cursor: "pointer", padding: 20, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
                       <MemberAvatar member={m} size={56} />
